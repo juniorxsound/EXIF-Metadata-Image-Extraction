@@ -19,6 +19,7 @@ To quickly get started make sure you have [Docker installed](https://docs.docker
 ## Notebooks 📝
 - [Lenovo Mirage 180 Stereo Camera - stereo exctraction](https://github.com/juniorxsound/EXIF-Metadata-Image-Extraction/blob/master/notebooks/Lenovo%20Mirage%20Camera.ipynb)
 - [iPhone Portrait - depth extraction](https://github.com/juniorxsound/EXIF-Metadata-Image-Extraction/blob/master/notebooks/iPhone%20Portrait%20Depth.ipynb)
+- [Google Pixel Portait - depth extraction](https://github.com/juniorxsound/EXIF-Metadata-Image-Extraction/blob/master/notebooks/Pixel%20Portait%20Depth.ipynb)
 
 ## Enviorment 🗻
 This repo uses Docker to manage the dependencies. Here is a list of the available commands
