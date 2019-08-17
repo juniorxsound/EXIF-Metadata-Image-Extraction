@@ -7,13 +7,11 @@
 </head>
 
 <body>
-    <h1>Hello World!</h1>
-    We are using node
-    <script>document.write(process.versions.node)</script>,
-    Chrome
-    <script>document.write(process.versions.chrome)</script>,
-    and Electron
-    <script>document.write(process.versions.electron)</script>.
+    <h1>1) Select an image to start</h1>
+    <input type="file" id="img_selector" alt="Image Selector" name="Image Selector" accept="image/jpg, image/jpeg">
+    <img id="img_preview" />
+
+    <script>require('./renderer.js')</script>
 </body>
 
 </html>

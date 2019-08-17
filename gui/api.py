@@ -4,6 +4,7 @@ from subprocess import PIPE, run, TimeoutExpired, CalledProcessError
 from os import getenv, getcwd, listdir, path
 from PIL import Image
 from io import BytesIO
+import base64
 load_dotenv()
 
 app = Flask(__name__)
@@ -35,7 +36,7 @@ def index():
 '''
 Return the EXIF metadata as JSON
 '''
-@app.route('/exif/json', methods=['GET'])
+@app.route('/exif/json', methods=['GET', 'POST'])
 def raw_exif_as_json():
     if 'file' not in request.files:
         return 'Oops, no image file provided in the request body', 400
@@ -58,7 +59,7 @@ def raw_exif_as_json():
 '''
 Return the EXIF metadata as JSON
 '''
-@app.route('/exif/json', methods=['GET'])
+@app.route('/exif/json', methods=['GET', 'POST'])
 def raw_exif_as_xml():
     if 'file' not in request.files:
         return 'Oops, no image file provided in the request body', 400
@@ -81,7 +82,7 @@ def raw_exif_as_xml():
 '''
 Returns a JPEG image with the depth map from iPhone portrait images
 '''
-@app.route('/exif/depth/iphone', methods=['GET'])
+@app.route('/exif/depth/iphone', methods=['GET', 'POST'])
 def depthmap_from_iphone():
     if 'file' not in request.files:
         return 'Oops, no image file provided in the request body', 400
@@ -104,7 +105,7 @@ def depthmap_from_iphone():
 '''
 Returns a JPEG image with the depth map from Pixel portrait images
 '''
-@app.route('/exif/depth/pixel', methods=['GET'])
+@app.route('/exif/depth/pixel', methods=['GET', 'POST'])
 def depthmap_from_pixel():
     if 'file' not in request.files:
         return 'Oops, no image file provided in the request body', 400

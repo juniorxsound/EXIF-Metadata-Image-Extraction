@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron')
+require('dotenv').config() // Loads process.env enviorment variables
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,8 +18,8 @@ function createWindow() {
     // and load the index.html of the app.
     win.loadFile('index.html')
 
-    // Open the DevTools.
-    win.webContents.openDevTools()
+    // Open the DevTools if we are developing.
+    process.env.ENV === 'development' ? win.webContents.openDevTools() : null;
 
     // Emitted when the window is closed.
     win.on('closed', () => {
