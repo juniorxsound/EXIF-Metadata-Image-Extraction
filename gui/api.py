@@ -59,7 +59,7 @@ def raw_exif_as_json():
 Return the EXIF metadata as JSON
 '''
 @app.route('/exif/json', methods=['GET'])
-def raw_exif_as_json():
+def raw_exif_as_xml():
     if 'file' not in request.files:
         return 'Oops, no image file provided in the request body', 400
 
