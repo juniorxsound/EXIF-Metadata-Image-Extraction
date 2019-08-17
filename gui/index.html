@@ -8,8 +8,12 @@
 
 <body>
     <h1>1) Select an image to start</h1>
-    <input type="file" id="img_selector" alt="Image Selector" name="Image Selector" accept="image/jpg, image/jpeg">
-    <img id="img_preview" />
+    <section>
+        <input type="file" id="img_selector" alt="Image Selector" name="Image Selector" accept="image/jpg, image/jpeg">
+    </section>
+    <section>
+        <img id="img_preview" width="400" />
+    </section>
 
     <script>require('./renderer.js')</script>
 </body>

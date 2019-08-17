@@ -5,23 +5,18 @@ const imageSelector = document.getElementById('img_selector')
 const imagePreview  = document.getElementById('img_preview')
 
 imageSelector.addEventListener('change', (e) => {
-    const tempPath = event.target.files[0]
-    const reader = new FileReader()
-    
-    // Preview the image and make the api request
-    reader.addEventListener('load', () => {
-        console.log(event.target.files[0])
-        apiRequest('exif/json', reader.result)
-            .then(res => {
-                res.json().then(obj => {
-                    console.log(obj)
-                })
-            })
-            .catch(err => {
-                console.error(err)
-            })
-    }, false);
+    const file = e.target.files[0]
 
-    reader.readAsDataURL(tempPath)
+    // Show the preview of the image
+    imagePreview.src = file.path
+
+    // Request the binary stream and hit the API for the exif metadata
+    fetch(file.path).then(response => {
+        response.blob().then(blob => {
+            apiRequest('exif/json', blob).then(res => {
+                console.log(res)
+            })
+        })
+    })
 
 })

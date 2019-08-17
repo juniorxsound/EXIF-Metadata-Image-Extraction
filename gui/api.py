@@ -38,13 +38,13 @@ Return the EXIF metadata as JSON
 '''
 @app.route('/exif/json', methods=['GET', 'POST'])
 def raw_exif_as_json():
-    if 'file' not in request.files:
+    if request.data is None:
         return 'Oops, no image file provided in the request body', 400
 
     try:
         result = run(
             ['exiftool', '-', '-j'],
-            input=request.files['file'].read(),
+            input=request.data,
             check=True,
             stdout=PIPE,
             timeout=10,
@@ -61,13 +61,13 @@ Return the EXIF metadata as JSON
 '''
 @app.route('/exif/json', methods=['GET', 'POST'])
 def raw_exif_as_xml():
-    if 'file' not in request.files:
+    if request.data is None:
         return 'Oops, no image file provided in the request body', 400
 
     try:
         result = run(
             ['exiftool', '-', '-X'],
-            input=request.files['file'].read(),
+            input=request.data,
             check=True,
             stdout=PIPE,
             timeout=10,
@@ -84,13 +84,13 @@ Returns a JPEG image with the depth map from iPhone portrait images
 '''
 @app.route('/exif/depth/iphone', methods=['GET', 'POST'])
 def depthmap_from_iphone():
-    if 'file' not in request.files:
+    if request.data is None:
         return 'Oops, no image file provided in the request body', 400
 
     try:
         result = run(
             ['exiftool', '-', '-b', '-MPImage2'],
-            input=request.files['file'].read(),
+            input=request.data,
             check=True,
             stdout=PIPE,
             timeout=10,
@@ -107,13 +107,13 @@ Returns a JPEG image with the depth map from Pixel portrait images
 '''
 @app.route('/exif/depth/pixel', methods=['GET', 'POST'])
 def depthmap_from_pixel():
-    if 'file' not in request.files:
+    if request.data is None:
         return 'Oops, no image file provided in the request body', 400
 
     try:
         result = run(
             ['exiftool', '-', '-b', '-Data'],
-            input=request.files['file'].read(),
+            input=request.data,
             check=True,
             stdout=PIPE,
             timeout=10,
