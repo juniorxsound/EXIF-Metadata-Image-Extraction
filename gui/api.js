@@ -1,35 +1,29 @@
 
 require('dotenv').config() // Loads process.env enviorment variables
 
-const IsJson = (str) => {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
+/**
+ * An XML HTTP Request Promise wrapper
+ * @param {String} route - What is the route this request should be made to? (default is `exif/json`)
+ * @param {String} img - Base64 encoded img string
+ * @param {String} method - What request method should be used (default is POST)
+ * @returns {Promise} promise
+ */
+module.exports = (route='exif/json', img, method='POST') => {
+    if (!img) {
+        console.error('Must provide an img argument to make a request')
+        return
     }
-    return true;
-}
 
-const hexToBase64 = (str) => {
-    return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
-}
-
-const request = (route = 'exif/json', img) => {
     return new Promise((resolve, reject) => {
         const req = new XMLHttpRequest()
-        req.open('POST', `http://${process.env.HOST}:${process.env.PORT}/${route}`, true)
+        req.open(method, `http://${process.env.HOST}:${process.env.PORT}/${route}`, true)
+        req.setRequestHeader('Content-Type', 'application/json')
+
         req.onerror = (e) => reject(req.statusText)
-        req.onloadend = (e) => {
-            if (IsJson(req.response)) {
-                resolve(JSON.parse(req.response)[0])
-            } else {
-                resolve(`data:image/jpeg;base64,${hexToBase64(req.response)}`)
-            } 
-        }
+        req.onloadend = (e) => resolve(req.response)
 
-        req.send(img)
+        req.send(JSON.stringify({
+            'image': img
+        }))
     })
-    
 }
-
-module.exports = request

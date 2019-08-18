@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, send_file
+from flask import Flask, request, redirect, url_for, send_file, jsonify, Response
 from dotenv import load_dotenv
 from subprocess import PIPE, run, TimeoutExpired, CalledProcessError
 from os import getenv, getcwd, listdir, path
@@ -38,13 +38,15 @@ Return the EXIF metadata as JSON
 '''
 @app.route('/exif/json', methods=['GET', 'POST'])
 def raw_exif_as_json():
-    if request.data is None:
+    if request.json is None:
         return 'Oops, no image file provided in the request body', 400
+
+    decoded_base64_img = base64.b64decode(request.get_json()['image'])
 
     try:
         result = run(
             ['exiftool', '-', '-j'],
-            input=request.data,
+            input=decoded_base64_img,
             check=True,
             stdout=PIPE,
             timeout=10,
@@ -54,20 +56,22 @@ def raw_exif_as_json():
     except CalledProcessError:
         return 'Sorry, the server had a weird issue out', 500
 
-    return send_file(BytesIO(result.stdout), mimetype='application/json')
+    return Response(result.stdout.decode('utf-8'), mimetype='application/json'), 200
 
 '''
 Return the EXIF metadata as JSON
 '''
-@app.route('/exif/json', methods=['GET', 'POST'])
+@app.route('/exif/xml', methods=['GET', 'POST'])
 def raw_exif_as_xml():
-    if request.data is None:
+    if request.json is None:
         return 'Oops, no image file provided in the request body', 400
+
+    decoded_base64_img = base64.b64decode(request.get_json()['image'])
 
     try:
         result = run(
             ['exiftool', '-', '-X'],
-            input=request.data,
+            input=decoded_base64_img,
             check=True,
             stdout=PIPE,
             timeout=10,
@@ -77,20 +81,22 @@ def raw_exif_as_xml():
     except CalledProcessError:
         return 'Sorry, the server had a weird issue out', 500
 
-    return send_file(BytesIO(result.stdout), mimetype='text/xml')
+    return Response(result.stdout.decode('utf-8'), 'text/xml'), 200
 
 '''
 Returns a JPEG image with the depth map from iPhone portrait images
 '''
 @app.route('/exif/depth/iphone', methods=['GET', 'POST'])
 def depthmap_from_iphone():
-    if request.data is None:
+    if request.json is None:
         return 'Oops, no image file provided in the request body', 400
+
+    decoded_base64_img = base64.b64decode(request.get_json()['image'])
 
     try:
         result = run(
             ['exiftool', '-', '-b', '-MPImage2'],
-            input=request.data,
+            input=decoded_base64_img,
             check=True,
             stdout=PIPE,
             timeout=10,
@@ -100,20 +106,24 @@ def depthmap_from_iphone():
     except CalledProcessError:
         return 'Sorry, the server had a weird issue out', 500
 
-    return send_file(BytesIO(result.stdout), mimetype='image/jpeg')
+    encoded_base64_img = base64.b64encode(result.stdout).decode('utf-8')
+
+    return jsonify({ 'image': 'data:image/jpeg;base64,' + encoded_base64_img}), 200
 
 '''
 Returns a JPEG image with the depth map from Pixel portrait images
 '''
 @app.route('/exif/depth/pixel', methods=['GET', 'POST'])
 def depthmap_from_pixel():
-    if request.data is None:
+    if request.json is None:
         return 'Oops, no image file provided in the request body', 400
+
+    decoded_base64_img = base64.b64decode(request.get_json()['image'])
 
     try:
         result = run(
             ['exiftool', '-', '-b', '-Data'],
-            input=request.data,
+            input=decoded_base64_img,
             check=True,
             stdout=PIPE,
             timeout=10,
@@ -123,7 +133,9 @@ def depthmap_from_pixel():
     except CalledProcessError:
         return 'Sorry, the server had a weird issue out', 500
 
-    return send_file(BytesIO(result.stdout), mimetype='image/jpeg')
+    encoded_base64_img = base64.b64encode(result.stdout).decode('utf-8')
+
+    return jsonify({ 'image': 'data:image/jpeg;base64,' + encoded_base64_img}), 200
 
 
 if __name__ == '__main__':
