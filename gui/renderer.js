@@ -2,9 +2,9 @@
 const apiRequest = require('./api')
 
 const imageSelector = document.getElementById('img_selector')
-const imagePreview  = document.getElementById('img_preview')
+const imagePreview = document.getElementById('img_preview')
 const depth_preview = document.getElementById('depth_preview')
-const logger        = document.getElementById('log_box')
+const logger = document.getElementById('log_box')
 
 imageSelector.addEventListener('change', (e) => {
     const file = e.target.files[0]
@@ -57,6 +57,6 @@ imageSelector.addEventListener('change', (e) => {
                 console.error(err)
             })
     }
-    
+
     fileReader.readAsDataURL(file)
 })

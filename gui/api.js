@@ -8,7 +8,7 @@ require('dotenv').config() // Loads process.env enviorment variables
  * @param {String} method - What request method should be used (default is POST)
  * @returns {Promise} promise
  */
-module.exports = (route='exif/json', img, method='POST') => {
+module.exports = (route = 'exif/json', img, method = 'POST') => {
     if (!img) {
         console.error('Must provide an img argument to make a request')
         return

@@ -29,9 +29,11 @@ curl -X GET \
   -F file=@/Path/to/samples/pixel_portait_ORIGINAL.jpg
 '''
 
+
 @app.route('/')
 def index():
     return 'This is just another REST API, so nothing to see here', 400
+
 
 '''
 Return the EXIF metadata as JSON
@@ -58,6 +60,7 @@ def raw_exif_as_json():
 
     return Response(result.stdout.decode('utf-8'), mimetype='application/json'), 200
 
+
 '''
 Return the EXIF metadata as JSON
 '''
@@ -82,6 +85,7 @@ def raw_exif_as_xml():
         return 'Sorry, the server had a weird issue out', 500
 
     return Response(result.stdout.decode('utf-8'), 'text/xml'), 200
+
 
 '''
 Returns a JPEG image with the depth map from iPhone portrait images
@@ -108,7 +112,8 @@ def depthmap_from_iphone():
 
     encoded_base64_img = base64.b64encode(result.stdout).decode('utf-8')
 
-    return jsonify({ 'image': 'data:image/jpeg;base64,' + encoded_base64_img}), 200
+    return jsonify({'image': 'data:image/jpeg;base64,' + encoded_base64_img}), 200
+
 
 '''
 Returns a JPEG image with the depth map from Pixel portrait images
@@ -135,7 +140,7 @@ def depthmap_from_pixel():
 
     encoded_base64_img = base64.b64encode(result.stdout).decode('utf-8')
 
-    return jsonify({ 'image': 'data:image/jpeg;base64,' + encoded_base64_img}), 200
+    return jsonify({'image': 'data:image/jpeg;base64,' + encoded_base64_img}), 200
 
 
 if __name__ == '__main__':
