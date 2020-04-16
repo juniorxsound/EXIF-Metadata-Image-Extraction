@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \ 
     libtiff-dev \ 
     libjasper-dev \
-    wget
+    wget \
+    python3-tk
 
 # Install EXIF Tool (I know, kind of annoying it's not an apt-get install package)
 RUN wget https://sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-11.38.tar.gz \ 
@@ -28,8 +29,14 @@ RUN wget https://sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-11.38.tar.gz \
     && rm -rf Image-ExifTool-11.38.tar.gz \
     && rm -rf Image-ExifTool-11.38
 
+# Upgrade PIP
+RUN pip install --upgrade pip
+
 WORKDIR /src
 COPY requirements.txt .
 
 # Install the python dependencies
 RUN pip3 install --user -r requirements.txt
+
+# Set the flask app for running the GUI
+ENV FLASK_APP ./gui/api.py

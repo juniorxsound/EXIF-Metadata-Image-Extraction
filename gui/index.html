@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>EXIF Metadata</title>
+</head>
+
+<body>
+    <!-- Image selector -->
+    <h2>Select an image to start</h2>
+    <section>
+        <input type="file" id="img_selector" alt="Image Selector" name="Image Selector" accept="image/jpg, image/jpeg">
+    </section>
+
+    <!-- Image previews -->
+    <h2>Previews</h2>
+    <section>
+        <img id="img_preview" width="200" />
+        <img id="depth_preview" width="200" />
+    </section>
+
+    <!-- Logs -->
+    <h2>Logs</h2>
+    <section>
+        <div id="log_box" style="width: 500px; height: 200px; overflow: scroll; background-color: grey;"></div>
+    </section>
+
+    <script>require('./renderer.js')</script>
+</body>
+
+</html>
