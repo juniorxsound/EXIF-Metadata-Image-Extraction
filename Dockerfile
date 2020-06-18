@@ -9,16 +9,17 @@ ENV PATH "$PATH:/root/.local/bin"
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # Install all the other things we would need
 RUN apt-get update && apt-get install -y \ 
     pkg-config \
     python-dev \ 
     libopencv-dev \ 
-    libav-tools  \ 
+    ffmpeg \
     libjpeg-dev \ 
     libpng-dev \ 
     libtiff-dev \ 
-    libjasper-dev \
     wget
 
 # Install EXIF Tool (I know, kind of annoying it's not an apt-get install package)
